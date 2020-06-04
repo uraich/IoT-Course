@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <h2>The ESP32 User LED</h2>
+
+    <p>This WEB server controls the user LED on the ESP32 COU board</p>
+
+    <div>
+      <button onclick="ledOn()">Turn on the light</button>
+      <img id="ledImage" src="/static/led-blue-off-128.png" style="width:100px">
+      <button onclick="ledOff()">Turn off the light</button>
+      <p id="ledState">LED state</p>
+    </div>
+    <script>
+      function ledOn() {
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	      if (this.readyState == 4 && this.status == 200) {
+		  var ledStateArray = this.responseText.split("=");
+		  var state = "LED state: ";
+		  state = state.concat(ledStateArray[1]);
+		  document.getElementById('ledState').innerHTML = state;
+		  if (ledStateArray[1].localeCompare("on") === 0) {
+		      console.log(state)
+		      document.getElementById('ledImage').src='static/led-blue-on-128.png';
+		  }
+	      }
+	  };
+	  xhttp.open("GET", "ledOn", true);
+	  xhttp.send();
+      }
+      function ledOff() {
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	      if (this.readyState == 4 && this.status == 200) {
+		  var ledStateArray = this.responseText.split("=");
+		  var state = "LED state: ";
+		  state = state.concat(ledStateArray[1]);
+		  document.getElementById('ledState').innerHTML = state;
+
+		  if (ledStateArray[1].localeCompare("off") === 0) {
+		      console.log(state)
+		      document.getElementById('ledImage').src='static/led-blue-off-128.png';
+		  }
+	      }
+	  };
+	  xhttp.open("GET", "ledOff", true);
+	  xhttp.send();
+      }
+    </script>
+  </body>
+</html>

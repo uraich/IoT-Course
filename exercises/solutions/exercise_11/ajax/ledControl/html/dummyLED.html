@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>The ESP32 User LED</h2>
+
+<p>Just simulates switching on and off the ESP32 user LED</p>
+
+<p>There is no connection to the ESP32 hardware and you can run this HTML file directly in your browser. 
+  No need to run a WEB server on the ESP32. <br>
+Of course you can also have this html file served by <i>ajaxLEDServer.py</i> on the ESP32.
+If you want to actually control the user LED on the ESP32 CPU you must start <i>ajaxLEDServer.py</i>
+with the page: <i>serverIP/ledControl</i><br
+<i>picoweb</i> requires the icon files to be stored on a directory <i>/static</i>
+</p>  
+<button onclick="document.getElementById('ledImage').src='static/led-blue-on-128.png'">Turn on the light</button>
+
+<img id="ledImage" src="static/led-blue-off-128.png" style="width:100px">
+
+<button onclick="document.getElementById('ledImage').src='static/led-blue-off-128.png'">Turn off the light</button>
+
+</body>
+</html>
