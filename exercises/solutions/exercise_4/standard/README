@@ -1,0 +1,3 @@
+Micropython already includes a driver for the dht11 which we use in this
+program. This driver however does not give access to the raw data, which may be
+interesting for the students to look at and understand.

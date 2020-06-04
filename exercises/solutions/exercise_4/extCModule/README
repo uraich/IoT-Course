@@ -1,0 +1,10 @@
+The dht11Raw module with the function dht11ReadRaw must be included in the
+MicroPython binary.
+In order to accomplish this I created a directory user_modules on the same
+level in the file system as the MicroPython sources. In this directory I
+included dht11Raw with the C source code of the module: dht11Raw and an file
+describing how to build the module that will be included in the Makefile
+building MicroPython
+MicroPython must then be built with:
+make USER_C_MODULES=../../../user_modules CFLAGS_EXTRA=-DMODULE_DHT11RAW_ENABLED
+which adds the module to the system and enables it.

@@ -1,0 +1,82 @@
+#!/usr/bin/python3
+# Unpack the dht11 data which are packed into 32bit words into individual bits
+# and write these to a file
+# The file can then be plotted with gnuplot
+# Copyright (c) U. Raich 10.3.2020
+# This program was written for the course on embedded systems at the
+# University of Cape Coast, Ghana
+# It is released under GPL
+#
+
+# open the file with the packed data which must be named: "dht11.txt"
+
+import sys
+
+try:
+    fd_r = open("dht11.txt","r")
+except:
+    print("Could not open the file 'dht11.txt' for reading, giving up ...")
+    sys.exit()
+
+bits=[]
+bitNo=0
+bitOn = False
+bitLength = 0
+
+for i in range(32):
+    d=int(fd_r.readline(),base=16)
+    # print("value read: %08x"%d)
+    mask = 0x80000000
+    for j in range(32):
+        if d & mask:
+            if not bitOn:
+                # here we start a data bit pulse 
+                bitOn=True
+                bitLength=1
+            else:
+                # calculate the length of the data pulse 
+                bitLength += 1            
+        else:
+            if bitOn:
+                # this is the end of the data pulse 
+                bits.append(bitLength)
+                bitNo += 1
+                # print("bit length of bit %d: %d"%(bitNo,bitLength))
+                bitLength=0
+                bitOn=False
+                
+        mask = mask >> 1
+
+fd_r.close()
+
+if bitNo != 40:
+    print("Something is wrong with the protocol")
+    sys.exit(-1)
+
+decodedData=[]
+for i in range(5):
+    d=0
+    for j in range(8):
+        # print(bits[i*8+j])
+        if bits[i*8+j] > 10:
+            d |= 1
+        if j < 7:
+            d=d<<1;
+        # print("%2x"%d)
+    decodedData.append(d)
+
+checksum = 0
+for i in range(4):
+    checksum += decodedData[i]
+if checksum != decodedData[4]:
+    print("Chechsum error: expected: 0x%02x but found: 0x%02x"%(decodedData[4],checksum))
+temperature = decodedData[2]+0.1*decodedData[3]
+humidity = decodedData[0]
+print("temperature: %d °C, humidity: %d %%"%(temperature,humidity))
+       
+
+
+
+
+
+
