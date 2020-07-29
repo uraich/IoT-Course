@@ -1,0 +1,9 @@
+convertFont.py is a program to convert the fonts from the SSD1351 driver
+(https://github.com/rdagger/micropython-ssd1351) to a format understood by Peter Hinch's font-to-py library:
+https://github.com/peterhinch/micropython-font-to-py
+
+It converts the C code from the ssd1351 driver to Python3 code required by
+/micropython-font-to-py
+
+Please call the program as follows:
+./convertFont.py name_of_C_File font_width font_height first_char no_of_chars >name_of_Python_output_file
