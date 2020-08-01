@@ -1,0 +1,63 @@
+# sync.py snchronize the ESP32 real time clock (RTC) and the
+# ds1307 RTC
+# copyright U. Raich, 11.May 2019
+# This program was written for the workshop on IoT at the
+# African Internet Summit 2019, Kampala, Uganda
+# It is released under GPL
+
+import network
+import time,sys
+from machine import *
+from ds1307 import *
+from wifi_connect import *
+
+now = time.time()
+# Convert to format needed by ds1307
+tm=time.localtime(now)
+
+month=tm[1]
+year=tm[0]
+day=tm[2]
+weekday=tm[6]+1
+hour=tm[3]
+minute=tm[4]
+sec=tm[5]
+dateAndTime=(year,month,day,weekday,hour,minute,sec)
+
+# here to set up the RTC
+if sys.platform == "esp8266":
+    print("Running on ESP8266")
+    pinScl      =  5  #ESP8266 GPIO5 (D1
+    pinSda      =  4  #ESP8266 GPIO4 (D2)
+else:
+    print("Running on ESP32") 
+    pinScl      =  22  # SCL on esp32 
+    pinSda      =  21  # SDA ON ESP32
+    
+# init ic2 object
+i2c = I2C(scl=Pin(pinScl), sda=Pin(pinSda)) 
+addrDS1307=0x68
+
+# Scan i2c bus and check if DS1307 is connected
+print('Scan i2c bus...')
+devices = i2c.scan()
+if len(devices) == 0:
+  print("No i2c device !")
+else:
+  print('i2c devices found:',len(devices))
+  ds1307IsConnected=False
+  for device in devices: 
+    if device == addrDS1307:
+      ds1307IsConnected = True
+      break
+if not ds1307IsConnected:
+    print("Could not find the DS1307, please connect the board!")
+    sys.exit()
+    
+ds1307 = DS1307(i2c)
+print("Setting time")
+print("date and time: %s"%str(dateAndTime))
+ds1307.datetime(dateAndTime)
+ds1307.halt(False)
+readBack=ds1307.datetime()
+print(readBack)

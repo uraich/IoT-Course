@@ -1,0 +1,10 @@
+Time stamp: 643889636, Temperature: 24.355392, Humidity: 45.631409%
+Time stamp: 643889641, Temperature: 24.355392, Humidity: 45.166016%
+Time stamp: 643889646, Temperature: 24.342041, Humidity: 45.068359%
+Time stamp: 643889651, Temperature: 24.328690, Humidity: 45.161438%
+Time stamp: 643889656, Temperature: 24.342041, Humidity: 45.376587%
+Time stamp: 643889661, Temperature: 24.328690, Humidity: 45.292664%
+Time stamp: 643889666, Temperature: 24.328690, Humidity: 45.210266%
+Time stamp: 643889671, Temperature: 24.283295, Humidity: 45.310974%
+Time stamp: 643889676, Temperature: 24.283295, Humidity: 45.228577%
+Time stamp: 643889682, Temperature: 24.296646, Humidity: 45.278931%
