@@ -30,7 +30,7 @@ def testlines(color):
     for y in range(0, tft.size()[1], 6):
         tft.draw_line(0,0,tft.size()[0] - 1, y, color)
 
-    tft-clear()
+    tft.clear()
     for x in range(0, tft.size()[0], 6):
         tft.draw_line(tft.size()[0] - 1, 0, x, tft.size()[1] - 1, color)
     for y in range(0, tft.size()[1], 6):
