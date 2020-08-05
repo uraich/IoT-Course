@@ -1,10 +1,10 @@
 from machine import Pin
 import time
 
-_PHASE1 = 22
-_PHASE2 = 21
-_PHASE3 = 17
-_PHASE4 = 16
+_PHASE1 = 26
+_PHASE2 = 18
+_PHASE3 = 19
+_PHASE4 = 23
 
 class steppingMotor:
     SINGLE_PHASE_FORWARD  = 0
