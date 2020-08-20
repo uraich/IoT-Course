@@ -666,7 +666,7 @@ class Display(framebuf.FrameBuffer):
         # Cast to python float first to fix rounding errors
         self.draw_lines(coords, color=color)
 
-    def ploygon( self, sides, x0, y0, r, color, rotate=0):
+    def polygon( self, sides, x0, y0, r, color, rotate=0):
         coords = []
         theta = radians(rotate)
         n = sides + 1
