@@ -1,0 +1,6 @@
+When the GPS receiver is connected to the PC
+To run showOnMap you must:
+have gpsd running : gpsd -N -s 115200 /dev/ttyUSB0
+
+redirect NMEA messages to tcp port 29999:
+gpspipe -r | nc -l 29999
