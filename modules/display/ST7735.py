@@ -468,7 +468,7 @@ class Display(framebuf.FrameBuffer):
         
     def setMADCTL( self ) :
         '''Set screen rotation and RGB/BGR format.'''
-        self.write_cmd(self.MADCTL)
+        self.write_cmd(MADCTL)
         colorcode = ST7735RGB if self._rgb else ST7735BGR
         #print("rgb: ",colorcode)
         self.write_data(bytearray([ST7735Rotations[self.rotate] | colorcode]))
