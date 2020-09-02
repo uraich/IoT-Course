@@ -431,8 +431,8 @@ def main():
 
     # Initialize ADC on VP pin 36
     adc = ADC(Pin(36))
-    # Set attenuation 0-2V (Will use resistor to limit pot to 2V).
-    adc.atten(ADC.ATTN_6DB)
+    # Set attenuation 0-3.3V 
+    adc.atten(ADC.ATTN_11DB)
 
     # Seed random numbers
     seed(ticks_us())
@@ -465,7 +465,7 @@ def main():
         while True:
             timer = ticks_us()
             # Set paddle position to ADC spinner (scale 6 - 98)
-            paddle.h_position(adc.read() // 44 + 5)
+            paddle.h_position((4096-adc.read()) // 44 + 5)
             # Handle balls
             score_points = 0
             for ball in balls:
