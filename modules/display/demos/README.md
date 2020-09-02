@@ -13,7 +13,10 @@ ampy put levels
 The linear potentiometer must be connected:
 
 pot    ESP32
+
 GND <> GND
+
 Vcc <> 3.3V
+
 DTB <> A0 == GPIO 36
 
