@@ -24,9 +24,8 @@ class TM1637:
     TM1637_CH4            = 0xc4
     TM1637_CH5            = 0xc5
 
-    TM1637_DISPLAY_BRIGHT = 0x80
-    TM1637_DISPLAY_ON     = 0x88
-    TM1637_DISPLAY_OFF    = 0x80
+    TM1637_DISPLAY_OFF        = 0x80
+    TM1637_DISPLAY_BRIGHTNESS = 0x88
     CLEAR = 16
 #
 #
@@ -37,7 +36,7 @@ class TM1637:
 #  E |   | C
 #     ---
 #      D
-    hexnums = [0x3f, # 0
+    segment_codes = [0x3f, # 0
                0x06, # 1
                0x5b, # 2
                0x4f, # 3
@@ -52,16 +51,15 @@ class TM1637:
                0x39, # C
                0x5e, # d
                0x79, # E
-               0x71, # F
-               0x00] # clear
+               0x71] # F
     
     def __init__(self, clk_pin=D1, dio_pin=D2):
         
         self.digits = [16,16,16,16]
         self.log = logging.getLogger("tm1637")
         self.log.setLevel(logging.ERROR)
-        
-        self.digits = [16,16,16,16]
+        self.brightness = 0xf
+        self.segments = [0,0,0,0]
         
         self.dio_pin = dio_pin
         self.clk_pin = clk_pin
@@ -147,20 +145,19 @@ class TM1637:
             self.log.error("Did not receive acknowledge from tm1637\nAre hardware connections ok?")
         self.log.debug("ack: %d"%ack)
         
-    def display_on(self):
+    def display_off(self):
         self.start_transfer()
-        self.write_byte(self.TM1637_DISPLAY_ON)
+        self.write_byte(self.TM1637_DISPLAY_OFF)
         self.stop_transfer()
-    
-    def write_digit(self,digit_num,digit,colon=True):
-       
-        if digit < 0 or digit > 0x10:
-            self.log.error("digit must be 0..0xf")
-            return
-        self.digits[digit_num] = digit  # keep current setting of the digit    
+        
+    def display_on(self):
+        self.set_brightness(self.brightness)
+        
+    def write_segments(self,digit_num,segment_code):
         if digit_num < 0 or digit_num > 3:
-            self.log.error("digit num must be 0..3")
+            log.error("digit_num must be 0..3")
             return
+        self.segments[digit_num] = segment_code # keep the current segment code
         # write data to display
         self.start_transfer()
         self.write_byte(self.TM1637_WRITE_DISPLAY)        
@@ -168,16 +165,36 @@ class TM1637:
         
         # write segment codes
         self.start_transfer()
-        self.write_byte(self.TM1637_CH0 | digit_num)        
-        if digit_num == 1 and colon:
-            self.write_byte(self.hexnums[digit] | 0x80)
-        else:
-            self.write_byte(self.hexnums[digit])
+        self.write_byte(self.TM1637_CH0 | digit_num)
+        self.log.debug("segment code: 0x%x"%segment_code)
+        self.write_byte(segment_code)
+        self.stop_transfer()
+
+        # write brightness
+        self.start_transfer()
+        self.log.debug("brightness code: 0x%x"%(self.TM1637_DISPLAY_BRIGHTNESS | self.brightness))
+        self.write_byte(self.TM1637_DISPLAY_BRIGHTNESS | self.brightness)
         self.stop_transfer()
         
+    def write_digit(self,digit_num,digit,colon=False):
+       
+        if digit < 0 or digit > 0x15:
+            self.log.error("digit must be 0..0xf")
+            return
+
+        segment_code = self.segment_codes[digit]
+        if digit_num == 1 and colon:
+            segment_code |=  0x80
+     
+        self.write_segments(digit_num,segment_code)
+        
     def clear_digits(self,colon=False):
-        for i in range(4):
-            self.write_digit(i,self.CLEAR,colon)
+        if colon:
+            for i in range(4):
+                self.write_segments(i,0x80)               
+        else:
+            for i in range(4):
+                self.write_segments(i,0)
     #
     # write a hex number
     #
@@ -206,10 +223,11 @@ class TM1637:
         bcd = thousands << 12 | hundreds << 8 | tens << 4 | ones
         self.write_hex(bcd,colon)
               
-    def brightness(self,value):
+    def set_brightness(self,value):
         if value < 0 or value > 7:
             self.log.error("Brightness must be 0..7")
-        
-        self.start_transfer()
-        self.write_byte(self.TM1637_DISPLAY_BRIGHT | value)
-        self.stop_transfer()
+        # set the new brightness value for all following calls
+        self.brightness = value
+        for i in range(4):
+            self.write_segments(i,self.segments[i])
+            
