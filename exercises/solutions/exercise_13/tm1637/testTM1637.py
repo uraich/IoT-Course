@@ -1,4 +1,9 @@
-from tm1637 import TM1637
+# tm1637 driver test program
+# Exercise the tm1637 driver trying all methods of the class
+# copyright U. Raich, 20.1.2021
+# The program is part of an IoT course at the University of Cape Coast, Ghana
+# released under GPLfrom tm1637 import TM1637
+
 from time import sleep_ms
 tm1637 = TM1637()
 tm1637.log.debug("display on")
