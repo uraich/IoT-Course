@@ -7,15 +7,21 @@
 
 from machine import Pin
 import sys,time
+import os
+osVersion=os.uname()
+
+# if there is 'spiram' in the machine name then we are on the T7 V1.4
+if osVersion.machine.find('spiram') == -1:
+    _LED_PIN = 2
+else:
+    _LED_PIN = 19
+_PB_PIN = 22
 
 print("Testing the push button")
 print("Program written for the course on IoT at the")
 print("University of Cape Coast, Ghana")
 print("Copyright: U.Raich")
 print("Released under the Gnu Public License")
-
-_PB_PIN = 17
-_LED_PIN = 2
 
 pushButton = Pin(_PB_PIN,Pin.IN,Pin.PULL_UP)
 led        = Pin(_LED_PIN,Pin.OUT)

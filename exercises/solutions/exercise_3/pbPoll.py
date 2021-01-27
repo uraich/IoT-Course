@@ -14,7 +14,7 @@ print("University of Cape Coast, Ghana")
 print("Copyright: U.Raich")
 print("Released under the Gnu Public License")
 
-_PB_PIN = 17
+_PB_PIN = 22
 pushButton = Pin(_PB_PIN,Pin.IN,Pin.PULL_UP)
 
 oldState = True
