@@ -61,6 +61,16 @@ class MathSeries:
     # the "geometric" number series:
     # 1 + 1/2 + 1/4 + 1/8 + 1/16 ...
 
+    def prime(self,max):
+        p = []
+        for n in range(2,max):
+            for x in range(2,n):
+                if n % x == 0:
+                    break
+            else:
+                p.append(n)
+        return p
+            
     def geometric(self,n,base):        
         geo = []
         g = 0
