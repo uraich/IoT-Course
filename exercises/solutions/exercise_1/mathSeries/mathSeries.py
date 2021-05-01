@@ -58,9 +58,7 @@ class MathSeries:
             f *= i
         return f
     
-    # the "geometric" number series:
-    # 1 + 1/2 + 1/4 + 1/8 + 1/16 ...
-
+    # Prime numbers
     def prime(self,max):
         p = []
         for n in range(2,max):
@@ -70,7 +68,9 @@ class MathSeries:
             else:
                 p.append(n)
         return p
-            
+    
+    # the "geometric" number series:
+    # 1 + 1/2 + 1/4 + 1/8 + 1/16 ...            
     def geometric(self,n,base):        
         geo = []
         g = 0
