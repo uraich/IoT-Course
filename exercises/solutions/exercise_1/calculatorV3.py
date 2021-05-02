@@ -18,8 +18,8 @@
 
 import re
 
-floatString='( *[+,-]?((\.\d+)|(\d+\.*\d*)) *)'
-operatorString = '( *[\+,\-,\*,/]? *)'
+floatString='([ ]*[-,+]?(?:(?:[.][\d])|(?:[\d]+[.]?[\d]*))[ ]*)'
+operatorString = '([ ]*[\+,\-,\*,/][ ]*)'
 calcString = '^'+floatString+operatorString+floatString+'$'
 # print(calcString)
 floatRegEx = re.compile(floatString)
@@ -32,10 +32,11 @@ while True:
     calcMatch=calcRegEx.match(calc)
     
     if calcMatch:
-        # for i in range(10):
-            # print(i," ",calcMatch.group(i))
-        print(calcMatch.group(1)," ",calcMatch.group(5)," ",
-              calcMatch.group(6)," = ",eval(calc))
-
+        # print("Match groups: ",calcMatch.groups())
+        try:
+            print(calcMatch.group(1)," ",calcMatch.group(2)," ",calcMatch.group(3)," = ",eval(calc))
+        except Exception as e:
+            if e.__class__ == ZeroDivisionError:
+                print("You tried to divide by zero, which is not allowed. Try again")            
     else:
         print("Bad input, please try again")
