@@ -1,0 +1,3 @@
+These examples have been developed on CPython on a PC. The MicroPython versions
+are slightly different because MicroPython has only a stripped down version
+of the regular expression module ""re".
