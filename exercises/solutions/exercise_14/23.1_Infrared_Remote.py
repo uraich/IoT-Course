@@ -80,7 +80,7 @@ while True:
     irValue = ir.read()
     if irValue:
         print("length of timeList: %d"%len(ir.timeList))
-        print(ir.bitBuffer)
         print(ir.timeList)
+        print(ir.bitBuffer)
         print(hex(irValue))
         print("key: " + IR_code[irValue])
