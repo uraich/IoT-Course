@@ -16,7 +16,7 @@ STATIC mp_obj_t dht11Raw_dht11ReadRaw(mp_obj_t pin_in, mp_obj_t buf_in) {
     mp_buffer_info_t bufinfo;
     mp_get_buffer_raise(buf_in, &bufinfo, MP_BUFFER_WRITE);
     mp_printf(&mp_plat_print, "buffer length: %d\n",bufinfo.len);
-    mp_printf(&mp_plat_print, "buffer type: \'%c\'",bufinfo.typecode);
+    mp_printf(&mp_plat_print, "buffer type: \'%c\'\n",bufinfo.typecode);
     if (bufinfo.typecode != 'I')
       mp_raise_ValueError(MP_ERROR_TEXT("Expecting unsigned integer array"));
     if (bufinfo.len != 32*4)
@@ -102,4 +102,3 @@ const mp_obj_module_t dht11Raw_user_cmodule = {
 
 // Register the module to make it available in Python
 MP_REGISTER_MODULE(MP_QSTR_dht11Raw, dht11Raw_user_cmodule, MODULE_DHT11RAW_ENABLED);
-
