@@ -55,7 +55,9 @@ def connect(ssid=None,password=None,hostname=None):
         settime()
     except:
         print("Could not get the time from ntp")
-        
+        print("from ntptime import settime")
+        print("settime()")
+
     print(station.ifconfig())
 
 
