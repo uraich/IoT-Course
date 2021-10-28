@@ -8,7 +8,7 @@ from ntptime import settime
 def connect(ssid=None,password=None,hostname=None):
     encoding          ='utf-8'
     user_ssid       = "your ssid"
-    user_password   = "your password"
+    user_password   = "your wifi password"
     
     station = network.WLAN(network.STA_IF)
     if station.isconnected() == True:
@@ -28,7 +28,7 @@ def connect(ssid=None,password=None,hostname=None):
     print(len(accessPoints), "access points found")
     if ssid == None:
         for i in range(len(accessPoints)):
-            if str(accessPoints[i][0],encoding) == user_ssid):
+            if str(accessPoints[i][0],encoding) == user_ssid:
                 print("Connecting to ",user_ssid)
                 ssid = user_ssid
                 password = user_password
@@ -51,8 +51,11 @@ def connect(ssid=None,password=None,hostname=None):
     print("Connection successful")
     
     # setup system time
-    settime()
-    
+    try:
+        settime()
+    except:
+        print("Could not get the time from ntp")
+        
     print(station.ifconfig())
 
 
