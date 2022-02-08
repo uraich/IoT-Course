@@ -53,6 +53,8 @@ class MathSeries:
     # same as factorial but calculates and returns only the last
     # value of the series
     def fact(self,n):
+        if n == 0:
+            return 1
         f=1
         for i in range(1,n+1):
             f *= i
