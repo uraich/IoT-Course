@@ -4,11 +4,15 @@
 # The program is part of the IoT course at the University of Cape Coast, Ghana
 
 from machine import Pin, ADC
-from time import sleep
+from time import sleep_ms
 
-slider = ADC(Pin(36))  # create ADC object on ADC pin 36
-slider.atten(ADC.ATTN_11DB)
+slider = ADC(Pin(36),atten=ADC.ATTN_11DB)  # create ADC object on ADC pin 36
 
 while True:
-    print("Slider: ",slider.read())
-    sleep(0.5)
+    s12 = slider.read()
+    s16 = slider.read_u16()
+    smV = slider.read_uv()//1000  # value is in micro Volt with a resolution of 1 milli Volt
+    print("Slider 12 bits: in decimal {:d} and in hex 0x{:04x}".format(s12,s12))
+    print("Slider 16 bits: in decimal {:d} and in hex 0x{:04x}".format(s16,s16))
+    print("Slider in mV: {:d}".format(smV))    
+    sleep_ms(500)
