@@ -6,6 +6,7 @@
 # Released under GPL
 
 from machine import Pin,PWM
+
 _SERVO_PIN=26 # default signal pin of the servo motor
 
 class Servo:
@@ -14,10 +15,17 @@ class Servo:
         self.servo.freq(50) # set PWM to 50 Hz
 
     def _angle2DutyCycle(self,angle):
-        duty = angle*90.0/180.0 + 35.0
+        # the SH90 servo motor runs on 50 Hz (20 ms period)
+        # the duty cycle runs from 0 .. 1023
+        if angle < -90 or angle > 90 :
+            print("angles should be in the range -90 .. 90")
+            raise Exception("Angles must be in the range 0° .. 90°")
+        
+        duty = (angle+90)*115/180  + 35 # experimentally found that 35 .. 160
+                                        # corresponds to 0 .. 180 degrees
         return int(duty)
-    
+
+    #  angles range from -90° to + 90°
     def angle(self,value):
         dutyCycle = self._angle2DutyCycle(value)
         self.servo.duty(dutyCycle)
-
