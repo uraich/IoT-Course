@@ -1,0 +1,38 @@
+/*
+ * read the plantower dust sensor
+ * copyright (c) U. Raich, 21.June 2020
+ */
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include "fp_serial.h"
+
+#define PMS5003_MSG_LENGTH 32
+
+bool debug=false;
+
+int main(int argc, char **argv) {
+  int i,retCode;
+  int handle;
+  int port=0;
+  int baudrate=9600;
+  uint8_t msgBuf[PMS5003_MSG_LENGTH];
+  int msgBufLength=PMS5003_MSG_LENGTH;
+  
+  /* open serial port */
+  open_serial(&handle,&port,&baudrate,&retCode);
+  if (retCode == FP_SUCCESS)
+    printf("Plantower PM5003 serial connection successfully opened\n");
+  else
+    return -1;
+  
+  /* read a message */
+  read_serial(&handle,(char *)msgBuf,&msgBufLength,&retCode);
+  if (retCode == FP_SUCCESS) {
+    for (i=0;i<PMS5003_MSG_LENGTH;i++)
+      printf("%02x ",msgBuf[i]);
+  }
+  
+  close_serial(&handle,&retCode);  
+}
