@@ -1,0 +1,5 @@
+gnuplot> set datafile separator ","
+gnuplot> set title "Calibrating the HCM5883"
+gnuplot> plot "calib.csv" using 1:2 title "XY" pointsize 2 pointtype 7
+gnuplot> replot "calib.csv" using 1:3 title "XZ" pointsize 2 pointtype 7
+gnuplot> replot "calib.csv" using 2:3 title "YZ" pointsize 2 pointtype 7
