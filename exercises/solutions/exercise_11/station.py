@@ -39,6 +39,9 @@ else:
 #
 
 visible_ssids = sta_if.scan()
+# sort the list on decreasing power
+visible_ssids.sort(key=lambda x: x[3], reverse=True)
+
 # print(visible_ssids)
 print("Visible SSIDs are:")
 print("   SSID\t\t\tBSSID\t\t\tchannel\tRSSI\tsecurity\tHidden")
