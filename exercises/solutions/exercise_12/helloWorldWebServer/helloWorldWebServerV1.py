@@ -56,8 +56,7 @@ while True:
   conn,addr=s.accept()
   print("GOT a connection from %s" % str(addr))
   request=conn.recv(1024)
-  print("Content %s" % str(request))
-  request=str(request)
+  print("Content %s" % request.decode())
   response=html
   conn.send(response)
   conn.close() 
