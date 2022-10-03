@@ -29,7 +29,7 @@ if [[ $dirs == *"/templates"* ]]
 then
     echo "/templates directory already exists"
     echo "The following modules have been uploaded to /templates:"
-    modules="$(ampy ls /template)"
+    modules="$(ampy ls /templates)"
     for i in $modules ; do
 	echo ${i#"/templates/"}
 	if [[ $i#"/templates/"} == *"sensor_tpl.py"* ]]
