@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+import uasyncio as asyncio
+from wifi_connect import *
+
+async def handle_echo(reader, writer):
+    data = await reader.read(100)
+    message = data.decode()
+    addr = writer.get_extra_info('peername')
+
+    print("Received {} from {}".format(message,addr))
+
+    print("Send: {}".format(message))
+    writer.write(data)
+    await writer.drain()
+
+    print("Close the connection")
+    writer.close()
+
+async def main():
+    server = await asyncio.start_server(
+        handle_echo, ipaddr, 8888)
+
+    addr = server.sockets[0].getsockname()
+    print('Serving on {}'.format(addr))
+
+    async with server:
+        await server.serve_forever()
+
+connect()
+ipaddr=getIPAddress()
+asyncio.run(main())
+

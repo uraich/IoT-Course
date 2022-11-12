@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SHT30 temperature and humidity via websockets</title>
+  </head>
+  <body>
+    <h1>SHT30 temperature and humidity via websockets</h1>
+    <br>
+    <style>
+      table, th, td {
+  	  border: 1px solid black;
+  	  padding: 5px;
+      }
+      table {
+  	  border-spacing: 15px;
+      }
+    </style>    
+    <table>
+      <tr>
+	<th align="left">measurement</th>
+	<th align="left">value</th>
+	<th align="left">timestamp</th>
+      </tr> 
+      <tr>
+	<td>temperature:</td>
+	<td id="temp">temperature</td>
+	<td id="timeStamp">taken at: timeStamp</td>
+      </tr>
+      <tr>
+	<td>humidity:</td>
+	<td id="humi">humidity</td>
+      </tr>
+    </table>
+    <br>
+    <p id="measText">Measurement</p> <br>
+    <h1>Control of user LED on the CPU card</h1>
+    <div>
+      <button onclick="ledOn()">Turn on the light</button>
+      <img id="ledImage" src="/static/led-blue-off-128.png" style="width:100px">
+      <button onclick="ledOff()">Turn off the light</button>
+      <p id="ledState">LED state: off</p>
+    </div>
+        
+    <script>
+      const meas_socket = new WebSocket('ws://' + location.host + '/meas');
+      meas_socket.addEventListener('message', ev => {
+          document.getElementById('measText').innerHTML = ev.data;
+	  var measArray=ev.data.split(",");
+	  var tempArray=measArray[0].split("=");
+	  document.getElementById("temp").innerHTML = tempArray[1];
+		  
+	  var humiArray=measArray[1].split("=");
+	  document.getElementById("humi").innerHTML = humiArray[1];
+	  
+	  var timeStampArray=measArray[2].split("=");
+	  document.getElementById("timeStamp").innerHTML = timeStampArray[1];
+      });
+      const led_socket = new WebSocket('ws://' + location.host + '/led');
+      
+      function ledOn() {
+	  led_socket.send("ledOn")
+	  document.getElementById('ledState').innerHTML = "LED state: on";
+	  document.getElementById('ledImage').src='static/led-blue-on-128.png';
+      }
+      function ledOff() {
+	  led_socket.send("ledOff")
+	  document.getElementById('ledState').innerHTML = "LED state: off";
+	  document.getElementById('ledImage').src='static/led-blue-off-128.png';
+      }
+    </script>
+  
+  </body>
+</html>

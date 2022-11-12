@@ -1,0 +1,18 @@
+# flash.py Heartbeat code for simple uasyncio-based echo server
+
+# Released under the MIT licence
+# Copyright (c) Peter Hinch 2019
+# adapted to ESP32 WROver-B U. Raich 2020
+import uasyncio as asyncio
+from sys import platform
+from machine import Pin
+
+async def heartbeat(tms):
+
+    from machine import Pin
+    led = Pin(19, Pin.OUT, value=1)
+
+    while True:
+
+        led(not led())
+        await asyncio.sleep_ms(tms)
