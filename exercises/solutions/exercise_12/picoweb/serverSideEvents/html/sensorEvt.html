@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>SHT30 temperature and humidity</title>
+    <style>
+      table, th, td {
+  	  border: 1px solid black;
+  	  padding: 5px;
+      }
+      table {
+  	  border-spacing: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1> SHT30 </h1>
+    <table>
+      <tr>
+	<th align="left">measurement</th>
+	<th align="left">value</th>
+	<th align="left">timestamp</th>
+      </tr> 
+      <tr>
+	<td>temperature:</td>
+	<td id="temp">temperature</td>
+	<td id="timeStamp">taken at: timeStamp</td>
+      </tr>
+      <tr>
+	<td>humidity:</td>
+	<td id="humi">humidity</td>
+      </tr>
+    </table>
+    <br>
+    <div>
+      <p id="measText">Measurement</p>
+    </div>
+
+<script>
+  var source = new EventSource("events");
+  source.onmessage = function(event) {
+      var meas = event.data;
+      document.getElementById("measText").innerHTML = meas;
+      var measArray=meas.split(",");
+		  
+      var tempArray=measArray[0].split("=");
+      document.getElementById("temp").innerHTML = tempArray[1];
+	  
+      var humiArray=measArray[1].split("=");
+      document.getElementById("humi").innerHTML = humiArray[1];
+	  
+      var timeStampArray=measArray[2].split("=");
+      document.getElementById("timeStamp").innerHTML = timeStampArray[1];
+      
+  }
+  source.onerror = function(error) {
+      console.log(error);
+      document.getElementById("measText").innerHTML = "EventSource error:" + error;
+  }
+  </script>
+</body>
+
+</html>
