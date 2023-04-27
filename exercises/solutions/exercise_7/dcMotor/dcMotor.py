@@ -36,7 +36,7 @@ for i in range(1,10):
 motorA.brake()
 time.sleep(1)
 
-# run the motor clock wise in increasing speed
+# run the motor clock wise in decreasing speed
 for i in range(1,10):
     motorA.speed(-1000*(i+1))
     time.sleep(2)
