@@ -5,5 +5,5 @@ as well as some scripts to setup the Wifi network, get the system time etc.
 
 Various drivers for WeMos D1 mini modules are also included e.g. motor drivers for DC, servo and stepping motors.
 
-For further details about the course please consult the Wiki pages associated with
+For further details about the course please consult the [Wiki pages](https://github.com/uraich/IoT-Course/wiki) associated with
 this repository.
